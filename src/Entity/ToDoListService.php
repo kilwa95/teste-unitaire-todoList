@@ -7,6 +7,8 @@ use App\Service\MailerService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Mailer\MailerInterface;
+
 
 
 use Doctrine\ORM\Mapping as ORM;
@@ -14,8 +16,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=ToDoListServiceRepository::class)
  */
-class ToDoListService
+class ToDoListService 
 {
+    protected  $mailer;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -28,10 +31,11 @@ class ToDoListService
      */
     private $item;
 
-    public function __construct()
+    public function __construct(MailerInterface $mailer)
     {
         $this->item = new ArrayCollection();
         $this->date = new \DateTime('now');
+        $this->mailer = $mailer;
     }
 
     public function getId(): ?int
@@ -58,8 +62,13 @@ class ToDoListService
                 throw new \LogicException('Une ToDoList peut contenir de 0 à 10 items');
                 break;
             case count($this->item) == 8:
-                $email = new MailerService();
-                $email->sendEmail('Vous ne peux plus qu’ajouter 2 items');
+                $email = (new Email())
+                ->from('hello@example.com')
+                ->to('you@example.com')
+                ->subject('Time for Symfony Mailer!')
+                ->text('Sending emails is fun again!')
+                ->html('<p>See Twig integration for better HTML integration!</p>');
+                $this->mailer->send($email);
                 throw new \LogicException('Vous ne peux plus qu’ajouter 2 items');
                 break;
                 default:

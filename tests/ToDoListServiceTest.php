@@ -5,7 +5,8 @@ namespace App\Tests;
 use PHPUnit\Framework\TestCase;
 use App\Entity\ToDoListService;
 use App\Entity\Item;
-use App\Service\MailerService;
+use Symfony\Component\Mailer\MailerInterface;
+
 
 
 
@@ -13,7 +14,8 @@ class ToDoListServiceTest extends TestCase
 {
     public function testAddItem()
     {
-        $list = new ToDoListService();
+        $mailer= $this->createMock(MailerInterface::class);
+        $list = new ToDoListService($mailer);
         $item = new Item();
         $item->setName('khaled');
         $item->setContent('abdulhalim');
@@ -22,8 +24,8 @@ class ToDoListServiceTest extends TestCase
 
     public function testAddItemExceptionName()
     {
-
-        $list = new ToDoListService();
+        $mailer= $this->createMock(MailerInterface::class);
+        $list = new ToDoListService($mailer);
         $item = new Item();
         $item->setName('khaled');
         $item->setContent('abdulhalim');
@@ -36,7 +38,8 @@ class ToDoListServiceTest extends TestCase
     public function testAddItemExceptionDixitems()
     {
             $faker = \Faker\Factory::create('fr-FR');
-            $list = new ToDoListService();
+            $mailer= $this->createMock(MailerInterface::class);
+            $list = new ToDoListService($mailer);
             for ($i = 0; $i < 11; $i++) {
             $item = new Item();
             $item->setName($faker->name());
@@ -50,13 +53,13 @@ class ToDoListServiceTest extends TestCase
     public function testAddItemExceptionEmail()
     {
             $faker = \Faker\Factory::create('fr-FR');
-            $list = new ToDoListService();
-            $email= $this->createMock(MailerService::class);
-            $email
-            ->expects($this->any())
-            ->method('sendEmail')
-            ->with("Vous ne peux plus qu’ajouter 2 items")
-            ->will($this->returnValue('Vous ne peux plus qu’ajouter 2 items'));
+            $mailer= $this->createMock(MailerInterface::class);
+            $list = new ToDoListService($mailer);
+            $mailer
+            ->expects($this->once())
+            ->method('send')
+            ->will($this->returnValue(true));
+
             for ($i = 0; $i <= 8; $i++) {
             $item = new Item();
             $item->setName($faker->name());
