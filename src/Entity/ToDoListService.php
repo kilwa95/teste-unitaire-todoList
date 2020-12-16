@@ -34,7 +34,7 @@ class ToDoListService
     public function __construct(MailerInterface $mailer)
     {
         $this->item = new ArrayCollection();
-        $this->date = new \DateTime('now');
+        // $this->date = new \DateTime('now');
         $this->mailer = $mailer;
     }
 
@@ -53,7 +53,6 @@ class ToDoListService
 
     public function addItem(Item $item): self
     {
-
         switch ($this->item) {
             case $this->item->contains($item):
                 throw new \LogicException('Un item contient un name (unique)');

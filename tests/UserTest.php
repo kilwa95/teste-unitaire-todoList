@@ -29,7 +29,7 @@ class UserTest extends TestCase
         $user->setPrenom('khaled');
         $user->setPrenom('khaled');
         $user->setEmail('khaled@gmail.com');
-        $user->setPassword('m');
+        $user->setPassword('');
         $user->setAge(10);
         $this->expectException('LogicException');
         $this->assertTrue($user->isValid());
