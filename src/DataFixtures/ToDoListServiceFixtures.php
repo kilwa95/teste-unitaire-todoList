@@ -26,6 +26,7 @@ class ToDoListServiceFixtures extends Fixture
         $faker = \Faker\Factory::create('fr-FR');
         for ($i=0; $i<5; $i++) {
         $ToDoList = new ToDoListService($this->mailer);
+        $ToDoList->setName($faker->name());
         $manager->persist($ToDoList);
 
         }
