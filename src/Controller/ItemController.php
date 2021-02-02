@@ -3,13 +3,22 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use App\Repository\ItemRepository;
+use App\Repository\ToDoListServiceRepository;
 use App\Service\ItemService;
+use App\Entity\ToDoListService;
+use App\Entity\Item;
+
+
+
+
+
 
 
 class ItemController extends AbstractController
@@ -36,4 +45,25 @@ class ItemController extends AbstractController
         return $this->json($item);
         
     }
+
+    /**
+     * @Rest\Post("/items/todolist/{id}")
+     * @param Request $request
+     */
+    public function saveItemeTodolist(int $id,Request $request,ToDoListServiceRepository $toDoListServiceRepository,MailerInterface $mailer)
+    {
+        $body = json_decode($request->getContent(), true);
+        $list = $toDoListServiceRepository->find($id);
+        $item = new Item();
+        $item->setName('khaled');
+        $item->setContent('abdulhalim');
+        
+        $list->addItem($item);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($item);
+        $em->flush();
+        return $this->json('ok');
+        
+    }
+
 }

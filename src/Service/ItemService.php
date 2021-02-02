@@ -35,9 +35,7 @@ class ItemService
         $item  = new Item();
         $item->setName($body['name']);
         $item->setContent($body['content']);
-
         $this->entityManager->persist($item);
-        $this->entityManager->flush();
         return $item ;
     }
   

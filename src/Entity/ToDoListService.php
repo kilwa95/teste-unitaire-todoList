@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ToDoListService 
 {
-    protected  $mailer;
+    public $mailer;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -35,6 +35,7 @@ class ToDoListService
      * @ORM\Column(type="string", length=255)
      */
     private $name;
+
 
     public function __construct(MailerInterface $mailer)
     {
