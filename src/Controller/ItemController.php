@@ -50,17 +50,13 @@ class ItemController extends AbstractController
      * @Rest\Post("/items/todolist/{id}")
      * @param Request $request
      */
-    public function saveItemeTodolist(int $id,Request $request,ToDoListServiceRepository $toDoListServiceRepository,MailerInterface $mailer)
+    public function saveItemeTodolist(int $id,ItemService $itemService,Request $request,ToDoListServiceRepository $toDoListServiceRepository,MailerInterface $mailer)
     {
         $body = json_decode($request->getContent(), true);
         $list = $toDoListServiceRepository->find($id);
-        $item = new Item();
-        $item->setName('khaled');
-        $item->setContent('abdulhalim');
-        
+        $item = $itemService->saveItem($body);
         $list->addItem($item);
         $em = $this->getDoctrine()->getManager();
-        $em->persist($item);
         $em->flush();
         return $this->json('ok');
         
