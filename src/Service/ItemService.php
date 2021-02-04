@@ -38,5 +38,45 @@ class ItemService
         $this->entityManager->persist($item);
         return $item ;
     }
-  
+
+    public function structureListByItem($toDoLists, $items)
+    {
+        $lists = [];
+        foreach ( $toDoLists as  $toDoList) {
+            $id = $toDoList->getId();
+            $name = $toDoList->getName();
+
+        if(!array_key_exists( $id, $lists)) {
+            $lists[$name] = [];           
+        } 
+
+        foreach ($items as $item) {
+            $idTodo = $item->getToDoListService()->getId();
+        if( $idTodo ===  $id){
+             array_push($lists[$name], $item);
+        }
+        }
+        }
+        return $lists;
+    }
+
+    public function serializeListes($lists){
+        $array = [];
+        foreach( $lists as  $index=>$list){
+            foreach( $list as $key=> $item){
+                $Object = [ 
+                    'id' => $item->getId(),
+                    'name' => $item->getName(),
+                    'content' => $item->getContent(),
+                    'date' => $item->getDate(),
+                ];
+    
+                $array[$index][]= $Object;
+            }
+        
+        }
+        return $array;
+    }
+
+
 }

@@ -16,41 +16,14 @@ use App\Entity\ToDoListService;
 use App\Entity\Item;
 
 
-
-
-
-
-
 class ItemController extends AbstractController
 {
-    /**
-     * @Rest\Get("/items")
-     */
-    public function getItemes(ItemRepository $itemRepository, ItemService $itemService)
-    {
-        $items = $itemRepository->findAll();
-        $itemsJson = $itemService->serialize($items);
-        return $this->json($itemsJson);
-        
-    }
-
-   /**
-     * @Rest\Post("/items")
-     * @param Request $request
-     */
-    public function saveItemes(Request $request, ItemService $itemService)
-    {
-        $body = json_decode($request->getContent(), true);
-        $item  = $itemService->saveItem($body);
-        return $this->json($item);
-        
-    }
-
+    
     /**
      * @Rest\Post("/items/todolist/{id}")
      * @param Request $request
      */
-    public function saveItemeTodolist(int $id,ItemService $itemService,Request $request,ToDoListServiceRepository $toDoListServiceRepository,MailerInterface $mailer)
+    public function saveItemeTodolist(int $id,ItemRepository $itemRepository,ItemService $itemService,Request $request,ToDoListServiceRepository $toDoListServiceRepository,MailerInterface $mailer)
     {
         $body = json_decode($request->getContent(), true);
         $list = $toDoListServiceRepository->find($id);
@@ -58,8 +31,23 @@ class ItemController extends AbstractController
         $list->addItem($item);
         $em = $this->getDoctrine()->getManager();
         $em->flush();
-        return $this->json('ok');
+        return $this->json('item added in todolist');
         
+    }
+
+     /**
+     * @Rest\Get("/items/todolist")
+     */
+
+    public function getodolistItems(ItemService $temService,ToDoListServiceRepository $toDoListServiceRepository,ItemRepository $itemRepository)
+    {
+            $toDoLists = $toDoListServiceRepository->findAll();
+            $items =  $itemRepository->findAll();
+            $lists = $temService->structureListByItem($toDoLists ,$items);
+            $listJson = $temService->serializeListes($lists);
+            // dd($lists);
+            return $this->json( $listJson);
+
     }
 
 }
