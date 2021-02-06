@@ -23,20 +23,29 @@ class ItemController extends AbstractController
      * @Rest\Post("/items/todolist/{id}")
      * @param Request $request
      */
-    public function saveItemeTodolist(int $id,ItemRepository $itemRepository,ItemService $itemService,Request $request,ToDoListServiceRepository $toDoListServiceRepository,MailerInterface $mailer)
+    public function postItemeTodolist(int $id,ItemRepository $itemRepository,ItemService $itemService,Request $request,ToDoListServiceRepository $toDoListServiceRepository,MailerInterface $mailer)
     {
         $body = json_decode($request->getContent(), true);
-        $list = $toDoListServiceRepository->find($id);
-        $item = $itemService->saveItem($body);
-        $list->addItem($item);
-        $em = $this->getDoctrine()->getManager();
-        $em->flush();
         $response = new JsonResponse();
-        $response->headers->set('Content-Type', 'application/json');
-        $response->setStatusCode(201);
-        $response->setData('item added in list');
-        return $response;
-        
+        if($body){
+            $list = $toDoListServiceRepository->find($id);
+            $item = $itemService->saveItem($body);
+            $list->addItem($item);
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            $response->headers->set('Content-Type', 'application/json');
+            $response->setStatusCode(201);
+            $response->setData('item added in list');
+            return $response;
+        }
+        else{
+            $response->headers->set('Content-Type', 'application/json');
+            $response->setStatusCode(404);
+            $response->setData('le body  est vide');
+            return $response;
+        }
+    
     }
 
      /**
