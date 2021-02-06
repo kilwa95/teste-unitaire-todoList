@@ -19,18 +19,28 @@ class ToDoListController extends AbstractController
      * @Rest\Post("/todolist")
      * @param Request $request
      */
-    public function saveTodolist(Request $request,MailerInterface $mailer): Response
+    public function postTodolist(Request $request,MailerInterface $mailer): Response
     {
         $body = json_decode($request->getContent(), true);
-        $list = new ToDoListService($mailer);
-        $list->setName($body['name']);
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($list);
-        $em->flush();
         $response = new JsonResponse();
-        $response->headers->set('Content-Type', 'application/json');
-        $response->setStatusCode(201);
-        $response->setData(' new todolist added ');
-        return $response;
+        if($body){
+            $list = new ToDoListService($mailer);
+            $list->setName($body['name']);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($list);
+            $em->flush();
+            $response = new JsonResponse();
+            $response->headers->set('Content-Type', 'application/json');
+            $response->setStatusCode(201);
+            $response->setData(' new todolist added ');
+            return $response;
+        }
+        else{
+            $response->headers->set('Content-Type', 'application/json');
+            $response->setStatusCode(404);
+            $response->setData('le body  est vide');
+            return $response;
+        }
+       
     }
 }

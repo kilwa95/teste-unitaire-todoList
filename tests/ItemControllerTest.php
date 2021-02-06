@@ -27,7 +27,7 @@ class ItemControllerTest extends WebTestCase
         $this->assertEquals(201, $client->getResponse()->getStatusCode());
     }
 
-    public function testPosTodolistItemsNotFoundException()
+    public function testPosTodolistItemsNotFound()
     {
 
         $client = static::createClient();
