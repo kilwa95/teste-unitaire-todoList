@@ -47,7 +47,6 @@ class ItemController extends AbstractController
             $listJson = $temService->serializeListes($lists);
             // dd($lists);
             return $this->json( $listJson);
-
     }
 
 }
