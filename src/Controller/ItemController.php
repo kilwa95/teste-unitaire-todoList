@@ -31,7 +31,11 @@ class ItemController extends AbstractController
         $list->addItem($item);
         $em = $this->getDoctrine()->getManager();
         $em->flush();
-        return $this->json('item added in todolist');
+        $response = new JsonResponse();
+        $response->headers->set('Content-Type', 'application/json');
+        $response->setStatusCode(201);
+        $response->setData('item added in list');
+        return $response;
         
     }
 
@@ -45,8 +49,11 @@ class ItemController extends AbstractController
             $items =  $itemRepository->findAll();
             $lists = $temService->structureListByItem($toDoLists ,$items);
             $listJson = $temService->serializeListes($lists);
-            // dd($lists);
-            return $this->json( $listJson);
+            $response = new JsonResponse();
+            $response->headers->set('Content-Type', 'application/json');
+            $response->setStatusCode(200);
+            $response->setData($listJson);
+            return $response;
 
     }
 
