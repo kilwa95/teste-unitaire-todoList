@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,7 +27,10 @@ class ToDoListController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $em->persist($list);
         $em->flush();
-        return $this->json(' new todolist added ');
-
+        $response = new JsonResponse();
+        $response->headers->set('Content-Type', 'application/json');
+        $response->setStatusCode(201);
+        $response->setData(' new todolist added ');
+        return $response;
     }
 }
