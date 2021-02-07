@@ -34,6 +34,7 @@ class Item
 
     /**
      * @ORM\ManyToOne(targetEntity=ToDoListService::class, inversedBy="item")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $toDoListService;
 
