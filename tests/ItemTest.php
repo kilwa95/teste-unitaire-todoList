@@ -5,6 +5,7 @@ namespace App\Tests;
 use PHPUnit\Framework\TestCase;
 use App\Service\ItemService;
 use App\Entity\Item;
+use App\Entity\ToDoListService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use App\Repository\ItemRepository;
@@ -48,6 +49,33 @@ class ItemTest extends KernelTestCase
         $this->assertInstanceOf('App\Entity\Item' ,$temService->saveItem($body));     
 
     }
+
+    public function testStructureListByItem(){
+        $entityManager= $this->createMock(EntityManagerInterface::class);
+        $itemService = new ItemService($entityManager);
+        $items =  $this->entityManager->getRepository(Item::class)->findAll();
+        $toDoLists =  $this->entityManager->getRepository(ToDoListService::class)->findAll();
+        $lists = [];
+        foreach ( $toDoLists as  $toDoList) {
+            $id = $toDoList->getId();
+            $name = $toDoList->getName();
+
+        if(!array_key_exists( $id, $lists)) {
+            $lists[$name] = [];           
+        } 
+
+        foreach ($items as $item) {
+            $idTodo = $item->getToDoListService()->getId();
+        if( $idTodo ===  $id){
+             array_push($lists[$name], $item);
+        }
+        }
+        }
+        $this->assertEquals($lists, $itemService->structureListByItem($toDoLists ,$items));
+
+    
+    }
+
 
     public function testSerializeListes()
     {
