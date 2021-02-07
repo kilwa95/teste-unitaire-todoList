@@ -19,7 +19,7 @@ class ItemControllerTest extends WebTestCase
     {
 
         $client = static::createClient();
-        $client->request('POST', '/items/todolist/76',[],[], 
+        $client->request('POST', '/items/todolist/111',[],[], 
         ['CONTENT_TYPE' => 'application/json'],
         '{"name":"matiere","content":"react"}'
     );

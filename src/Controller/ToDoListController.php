@@ -15,16 +15,13 @@ use App\Repository\ItemRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 
-
-
-
 class ToDoListController extends AbstractController
 {
      /**
      * @Rest\Post("/todolist")
      * @param Request $request
      */
-    public function ostTodolist(Request $request,MailerInterface $mailer): Response
+    public function postTodolist(Request $request,MailerInterface $mailer): Response
     {
         $body = json_decode($request->getContent(), true);
         $response = new JsonResponse();
@@ -69,6 +66,34 @@ class ToDoListController extends AbstractController
         $response->setStatusCode(204);
         $response->setData('id not found');
         return $response;
+    }
+
+    /**
+     * @Rest\Patch("/todolist/{id}")
+     * @param Request $request
+     */
+
+    public function patchTodolist(Request $request,int $id, ToDoListServiceRepository $toDoListServiceRepository): Response
+    {
+        $response = new JsonResponse();
+        $body = json_decode($request->getContent(), true);
+        if($id && $body){
+         $list = $toDoListServiceRepository->find($id);
+         $em = $this->getDoctrine()->getManager();
+         $list->setName($body['name']);
+         $em->flush();
+         $response->setStatusCode(200);
+         $response->setData(' todolist Updated ');
+         return $response;
+
+        }
+        else{
+            $response->headers->set('Content-Type', 'application/json');
+            $response->setStatusCode(204);
+            $response->setData('id ou body is empty');
+            return $response;
+        }
+
     }
 
 }
