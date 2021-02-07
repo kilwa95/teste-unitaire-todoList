@@ -41,7 +41,7 @@ class ItemController extends AbstractController
         }
         else{
             $response->headers->set('Content-Type', 'application/json');
-            $response->setStatusCode(404);
+            $response->setStatusCode(204);
             $response->setData('le body  est vide');
             return $response;
         }

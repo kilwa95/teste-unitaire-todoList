@@ -32,6 +32,6 @@ class ItemControllerTest extends WebTestCase
 
         $client = static::createClient();
         $client->request('POST', '/items/todolist/76');
-        $this->assertEquals(404, $client->getResponse()->getStatusCode());
+        $this->assertEquals(204, $client->getResponse()->getStatusCode());
     }
 }

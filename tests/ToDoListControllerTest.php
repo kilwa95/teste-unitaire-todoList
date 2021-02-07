@@ -22,6 +22,6 @@ class ToDoListControllerTest extends WebTestCase
     {
         $client = static::createClient();
         $client->request('POST', '/todolist');
-        $this->assertEquals(404, $client->getResponse()->getStatusCode());
+        $this->assertEquals(204, $client->getResponse()->getStatusCode());
     }
 }
