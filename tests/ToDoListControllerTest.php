@@ -24,4 +24,21 @@ class ToDoListControllerTest extends WebTestCase
         $client->request('POST', '/todolist');
         $this->assertEquals(204, $client->getResponse()->getStatusCode());
     }
+
+
+    public function testDeleteTodolist()
+    {
+        $client = static::createClient();
+        $client->request('Delete', '/todolist/100');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+    }
+
+    // public function testDeleteTodolistNotFound() 
+    // {
+    //     $client = static::createClient();
+    //     $client->request('Delete', '/todolist/100');
+    //     $this->assertEquals(204, $client->getResponse()->getStatusCode());
+    // }
 }
