@@ -66,7 +66,7 @@ class ToDoListController extends AbstractController
         }
 
         $response->headers->set('Content-Type', 'application/json');
-        $response->setStatusCode(404);
+        $response->setStatusCode(204);
         $response->setData('id not found');
         return $response;
     }
