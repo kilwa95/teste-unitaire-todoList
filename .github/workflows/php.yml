@@ -15,7 +15,7 @@ jobs:
         image: mysql:5.7
         env:
           MYSQL_ROOT_PASSWORD: root
-          ports: 8889:8889 
+          ports: 3306:3306
           options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       phpmyadmin:
         image: phpmyadmin/phpmyadmin
@@ -28,8 +28,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: installe mysql
-      run: docker-php-ext-install mysqli pdo pdo_mysql
     - name: Cache Composer packages
       id: composer-cache
       uses: actions/cache@v2
