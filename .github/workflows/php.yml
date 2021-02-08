@@ -17,6 +17,14 @@ jobs:
           MYSQL_ROOT_PASSWORD: root
           ports: 8889:8889 
           options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        env:
+         PMA_HOST: mysql
+         PMA_USER: root
+         PMA_PASSWORD: root
+         ports: 8080:80
+
 
     steps:
     - uses: actions/checkout@v2
