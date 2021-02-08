@@ -20,5 +20,7 @@ jobs:
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
     - name: Install Dependencies
       run:  composer install --ignore-platform-reqs
+    - name: create dataBase
+      run: php bin/console d:d:c
     - name: teste intaire
       run: php bin/phpunit
