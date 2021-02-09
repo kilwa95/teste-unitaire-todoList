@@ -25,6 +25,8 @@ jobs:
       run: composer install --ignore-platform-reqs
 
     - name: build docker
+      run: docker-compose build --no-cache
+    - name: run docker
       run: docker-compose up -d
     - name: create database
       run: php bin/console d:d:c
