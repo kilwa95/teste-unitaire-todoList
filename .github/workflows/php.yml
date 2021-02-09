@@ -40,8 +40,8 @@ jobs:
     - name: Install dependencies
       if: steps.composer-cache.outputs.cache-hit != 'true'
       run: composer install --ignore-platform-reqs
-    - name: create dataBase
-      run: php bin/console d:d:c
+    - name: build docker
+      run: docker-compose up -d
     
 
     #- name: Run test suite
